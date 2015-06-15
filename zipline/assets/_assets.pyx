@@ -19,6 +19,7 @@ Cythonized Asset object.
 cimport cython
 
 import numpy as np
+import warnings
 cimport numpy as np
 
 # IMPORTANT NOTE: You must change this template if you change
@@ -202,6 +203,32 @@ cdef class Equity(Asset):
         strings = ('%s=%s' % (t[0], t[1]) for t in tuples)
         params = ', '.join(strings)
         return 'Equity(%d, %s)' % (self.sid, params)
+
+    property security_start_date:
+        """
+        DEPRECATION: This property should be deprecated and is only present for
+        backwards compatibility
+        Alias for start_date to disambiguate from other `start_date`s in the
+        system.
+        """
+        def __get__(self):
+            warnings.warn("The security_start_date property will soon be "
+            "retired. Please use the asset_start_date property instead.",
+            DeprecationWarning)
+            return self.start_date
+
+    property security_end_date:
+        """
+        DEPRECATION: This property should be deprecated and is only present for
+        backwards compatibility
+        Alias for end_date to disambiguate from other `end_date`s in the
+        system.
+        """
+        def __get__(self):
+            warnings.warn("The security_end_date property will soon be "
+            "retired. Please use the asset_end_date property instead.",
+            DeprecationWarning)
+            return self.end_date
 
 
 cdef class Future(Asset):
